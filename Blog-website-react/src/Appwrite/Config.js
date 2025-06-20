@@ -89,6 +89,41 @@ export class DBService{
             throw error;
         }
     }
+
+    // file upload service
+    async uploadFile(file){
+        try {
+            return await this.bucket.createFile(
+                conf.appwriteBucketID, // Bucket ID
+                ID.unique(), // File ID
+                file // File object
+            )
+        } catch (error) {
+            throw error;
+            return false
+        }
+    }
+    async deleteFile(fileID){
+        try {
+            await this.bucket.deleteFile(
+                conf.appwriteBucketID, // Bucket ID
+                fileID // File ID
+                
+            )
+            return true;
+        } catch (error) {
+            throw error;
+            return false;
+            
+        }
+    }
+
+    getFilePreview(fileID){
+        return this.bucket.getFilePreview(
+            conf.appwriteBucketID, // Bucket ID
+            fileID // File ID
+        )
+    }
 }
 
 const DBservice=new DBService();
