@@ -13,13 +13,24 @@ function App() {
       if(userData){
       dispatch(login({UserData:userData}))
     }
+    else{
+      dispatch(logout())
+    }
+    })
+    .finally(()=>{
+      setLoading(false)
     })
   },[])
-  return (
-    <>
-      <h1>Hello world</h1>
-    </>
-  )
+  if(loading){
+    return <div>Loading...</div>
+  }
+  else{
+    return(
+      <>
+      <div></div>
+      </>
+    )
+  }
 }
 
 export default App
