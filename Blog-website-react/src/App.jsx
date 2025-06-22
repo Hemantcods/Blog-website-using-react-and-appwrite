@@ -1,12 +1,12 @@
 import { useState,useEffect } from 'react'
-import { useDispach } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import './App.css'
-import authService from './services/authService'
+import authService from './Appwrite/auth'
 import{login,logout} from './store/authSlice'
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const dispatch=useDispach()
+  const dispatch=useDispatch()
   useEffect(()=>{
     authService.GetCurrentUser()
     .then((userData)=>{
@@ -27,7 +27,7 @@ function App() {
   else{
     return(
       <>
-      <div></div>
+      <div>Loaded</div>
       </>
     )
   }
