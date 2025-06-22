@@ -8,7 +8,7 @@ export class AuthService{
     constructor(){
            this.client
                 .setEndpoint(conf.appwriteUrl) // Your API Endpoint
-                .setProject(conf.appwriteProjetID); // Your project ID
+                .setProject(conf.appwriteProjectID); // Your project ID
               this.account=new Account(this.client);
     }
     async createUser(email,password,name){
@@ -21,7 +21,7 @@ export class AuthService{
             )
             if (UserAccount) {
                 // call annother function
-                this.Login({email,password})
+                await this.Login({email,password})
             }
             else{
                 return UserAccount;
@@ -32,7 +32,7 @@ export class AuthService{
     }
     async Login({email,password}){
         try {
-            return this.account.createEmailPasswordSession(
+            return await this.account.createEmailPasswordSession(
                 email,
                 password
             )
@@ -43,7 +43,7 @@ export class AuthService{
 
     async GetCurrentUser(){
         try {
-            return this.account.get();
+            return await this.account.get();
         } catch (error) {
             throw error;
             
@@ -52,7 +52,7 @@ export class AuthService{
     }    
     async Logout(){
         try {
-            return this.account.deleteSessions();
+            return await this.account.deleteSessions();
         } catch (error) {
             throw error;
         }
