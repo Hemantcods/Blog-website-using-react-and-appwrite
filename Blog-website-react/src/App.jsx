@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import './App.css'
 import authService from './Appwrite/auth'
 import{login,logout} from './store/authSlice'
+import Footer from './Componets/Footer/Footer'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -22,12 +23,17 @@ function App() {
     })
   },[])
   if(loading){
-    return <div>Loading...</div>
+    return( 
+      <>
+    <div>Loading...</div>
+    <Footer />
+    </>)
+    
   }
   else{
     return(
       <>
-      <div>Loaded</div>
+      <Footer />
       </>
     )
   }
