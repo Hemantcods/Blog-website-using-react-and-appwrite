@@ -10,7 +10,7 @@ export class DBService{
     constructor(){
         this.Client
             .setEndpoint(conf.appwriteUrl) // Your API Endpoint
-            .setProject(conf.appwriteProjetID); // Your project ID
+            .setProject(conf.appwriteProjectID); // Your project ID
         this.database=new Databases(this.Client);
         this.bucket=new Storage(this.Client); 
     }
