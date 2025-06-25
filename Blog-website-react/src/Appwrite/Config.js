@@ -1,6 +1,6 @@
 import { use } from "react";
 import conf from "../Conf/Conf";
-import { Client, ID,Databases,Storage,Query, Query } from "appwrite";
+import { Client, ID,Databases,Storage, Query } from "appwrite";
 
 
 export class DBService{

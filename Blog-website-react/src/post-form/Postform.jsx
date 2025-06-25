@@ -1,7 +1,7 @@
 import React,{use, useCallback} from 'react'
 import {useForm} from 'react-hook-form'
-import { Button,Input,RTE } from '../Componets/Index'
-import {DBservice as appwriteServices} from '../Appwrite/Config'
+import { Button,Input,RTE,Select } from '../Componets/Index'
+import appwriteServices from '../Appwrite/Config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 function Postform(Post) {
@@ -17,21 +17,20 @@ function Postform(Post) {
 
     const submit=async(data)=>{
         if(Post){
-            const file=data.featuredImage[0]? appwriteServices.uploadFile(data.featuredImage[0]) : null;
-            if(file){
-                appwriteServices.deleteFile(Post.featuredImage)
+            const file = data.image && data.image[0] ? await appwriteServices.uploadFile(data.image[0]) : null;
+            if (file && Post.featuredImage) {
+                await appwriteServices.deleteFile(Post.featuredImage);
             }
-            const DBpost=await appwriteServices.UpdatePost(Post.$id,{
+            const DBpost = await appwriteServices.UpdatePost(Post.$id, {
                 ...data,
-                featuredImage:file ? file.$id : undefined
-
+                featuredImage: file ? file.$id : Post.featuredImage,
             })
             if(DBpost){
                 navigate(`/post/${DBpost.slug}`)
             }
         } //this will done if the post is already present
         else{
-            const file=await appwriteServices.uploadFile(data.featuredImage[0])
+            const file=await appwriteServices.uploadFile(data.image[0])
             const DBpost=await appwriteServices.CreatePost({
                 ...data,
                 userID:Userdata.$id,
@@ -82,7 +81,7 @@ function Postform(Post) {
                     className="mb-4"
                     {...register("slug", { required: true })}
                     onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
+                        setValue("slug", SlugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
@@ -95,10 +94,10 @@ function Postform(Post) {
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !Post })}
                 />
-                {Post && (
+                {Post && Post.featuredImage && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteServices.getFilePreview(post.featuredImage)}
+                            src={appwriteServices.getFilePreview(Post.featuredImage)}
                             alt={Post.title}
                             className="rounded-lg"
                         />
